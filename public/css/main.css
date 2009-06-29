@@ -1,0 +1,75 @@
+body {
+	font-family: 'lucida grande';
+	font-size: 14px;
+	text-align:center;
+}
+
+h1, h2, h3 {
+	font-family: georgia;
+}
+
+#game_header {
+	font-style: italic;
+}
+
+#content {
+	margin-left:auto;
+	margin-right:auto;
+	width: 900px;
+}
+
+#list {
+	margin-top: 20px;
+}
+
+#list_desc {
+	margin-top: 25px;
+}
+
+#search_input {
+	border: 1px solid black;
+	height: 45px;
+	width: 520px;
+	color: gray;
+	font-size: 30px;
+	padding: 0px 10px;
+}
+
+h3 {
+	font-size: 24px;
+}
+
+h2 {
+	font-size: 36px;
+	margin: 30px 0px;
+}
+
+td {
+	text-align: right;
+}
+
+.game_prop {
+	text-align:center;
+	width: 180px;
+}
+
+.game_row {
+	height: 30px;
+}
+
+.game_data {
+	width: 100%;
+}
+
+.hidden {
+	display: none;
+}
+
+.toggle {
+	font-family: georgia;
+	color: #3399FF;
+}
+
+.toggle_container {
+	margin-top: 10px;
+}

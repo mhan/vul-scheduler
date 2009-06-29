@@ -1,0 +1,42 @@
+<% if (!@today_games.empty?) %>
+<h3 id="list_desc">Games This Week</h3>
+<div id="current_games" style="border:1px dotted black;margin-top: 15px;">
+<table id="game_data" class="game_data">
+	<tbody>
+		<% @today_games.each do |game| %>
+			<tr class="game_row">
+				<td class="game_prop"><%= game.pretty_gameday %></td>
+				<td class="game_prop"><%= game.pretty_gametime %></td>
+				<td class="game_prop"><%= game.field %></td>
+				<td class="game_prop"><%= game.team1 %></td>
+				<td class="game_prop"><%= game.team2 %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+</div>
+<% if (!@later_games.empty?)%>
+<div id="later_games">
+	<div class="toggle_container">
+		<a id="toggle" href="." class="toggle">[ All Games ]</a>
+	</div>
+	<div id="later_game_data" class="hidden" style="border:1px dotted black;margin-top: 15px;margin-bottom:30px;">
+		<table class="game_data">
+			<tbody>
+				<% @later_games.each do |game| %>
+				<tr class="game_row">
+					<td class="game_prop"><%= game.pretty_gameday %></td>
+					<td class="game_prop"><%= game.pretty_gametime %></td>
+					<td class="game_prop"><%= game.field %></td>
+					<td class="game_prop"><%= game.team1 %></td>
+					<td class="game_prop"><%= game.team2 %></td>
+				</tr>
+				<% end %>
+			</tbody>
+		</table>
+	</div>
+</div>
+<% end %>
+<% else %>
+<h3 id="nothing">No Scheduled Games</h3>
+<% end %>
