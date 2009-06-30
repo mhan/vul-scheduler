@@ -48,7 +48,9 @@ end
 
 get '/games' do
   name = params[:name]
-  games = Game.all(:conditions => ["(team1 = ? OR team2 = ?) AND gametime > ?", name, name, DateTime.now - 1], :order => [:gametime.asc])
+  # Always do time comparisons in PST
+  pst = DateTime.now.new_offset(Rational(-7,24))
+  games = Game.all(:conditions => ["(team1 = ? OR team2 = ?) AND gametime > ?", name, name, pst - 1], :order => [:gametime.asc])
   @later_games = []
   @today_games = []
   if (!games.empty?)
