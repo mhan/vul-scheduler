@@ -10,66 +10,112 @@
 	<script src="js/Autocompleter.js"></script>
 	<script src="js/Autocompleter.Request.js"></script>
 	<script>
-		var autoComplete;
-		function initSearch()
-		{
-			// Our instance for the element with id "demo-local"
-			autoComplete = new Autocompleter.Request.JSON('search_input', 'team_search', {
-				'indicatorClass': 'autocompleter-loading',
-				'ajaxOptions': {'method':'get'},
-				'onFocus': clearInput,
-				'onBlur': handleBlur,
-				'onSelection': handleSelect,
-				'selectMode': false
-			});
-		}
-		
-		function clearInput(input) {
-			var input = $('search_input');
-			if (input.value == "Find your team!") {
-				$("search_input").value = "";
-			}
-		}
-		function handleBlur(input) {
-			var input = $("search_input");
-			if (input.value == "") {
-				input.value = "Find your team!";
-			}
-		}
-		
-		function handleSelect(input) {
-			var teamName = input.value;
-			var req = new Request(
-				{
-					url: 'games', 
-					onSuccess: loadGames,
-					method: 'get'});
-			req.send("name=" + teamName)
-		}
-		
-		function loadGames(games) {
-			$("list").innerHTML = games;
-			if ($("nothing") == null) {
-				//$("game_data").style.backgroundColor = "#3399FF";
-				var fx = new Fx.Tween("game_data", {duration: 800});
-				fx.set('background-color', '#3399FF');
-				setTimeout(function(){fx.start("background-color", "#3399FF", "#FFFFFF");}, 400);
-				if ($("toggle")) {
-					$("toggle").addEvent('click', function(e) {
-						if (e.target.innerHTML.indexOf("All") >= 0) {
-							e.target.innerHTML = "[ Hide ]";
-						}
-						else {
-							e.target.innerHTML = "[ All Games ]";
-						}
-						$("later_game_data").toggleClass("hidden");
-						return false;
-					});
+		(function() {
+			var autoComplete;
+			
+			function parseQueryString(qs) {
+				var q = qs.split("&");
+				var parsed = {};
+				for (var i = 0; i < q.length; i++) {
+					var pair = q[i].split("=");
+					if (pair.length > 1) {
+						parsed[pair[0]] = decodeURIComponent(pair[1]);
+					}
+				}
+				return parsed;
+			};
+			
+			function getTeamName() {
+				var parsed = parseQueryString(window.location.search.substring(1));
+				if (parsed["teams"]) {
+					return parsed["teams"];
+				}
+				else {
+					if (window.localStorage) {
+						return window.localStorage["team"];
+					}
+				}
+				return "";
+			};
+			
+			function init() {
+				var teamName = getTeamName();
+				initSearch(teamName);
+			};
+
+			function initSearch(teamName)
+			{
+				// Our instance for the element with id "demo-local"
+				autoComplete = new Autocompleter.Request.JSON('search_input', 'team_search', {
+					'indicatorClass': 'autocompleter-loading',
+					'ajaxOptions': {'method':'get'},
+					'onFocus': clearInput,
+					'onBlur': handleBlur,
+					'onSelection': handleSelect,
+					'selectMode': false
+				});
+				if (teamName) {
+					var input = $("search_input");
+					input.value = teamName;
+					handleSelect(input, false);
 				}
 			}
-		}
-		
-		document.addEvent('domready', initSearch);
+
+			function clearInput(input) {
+				var input = $('search_input');
+				if (input.value == "Find your team!") {
+					$("search_input").value = "";
+				}
+			}
+			function handleBlur(input) {
+				var input = $("search_input");
+				if (input.value == "") {
+					input.value = "Find your team!";
+				}
+			}
+
+			function handleSelect(input, doAnimation) {
+				var teamName = input.value;
+				var req = new Request(
+					{
+						url: 'games', 
+						onSuccess: function(games) {
+							loadGames(games, doAnimation);
+						},
+						method: 'get'
+					});
+				if (window.localStorage) {
+					window.localStorage["team"] = teamName;
+				}
+				req.send("name=" + teamName)
+			}
+
+			function loadGames(games, doAnimation) {
+				$("list").innerHTML = games;
+				if ($("nothing") == null) {
+					//$("game_data").style.backgroundColor = "#3399FF";
+					if (doAnimation !== false) {
+						var fx = new Fx.Tween("game_data", {duration: 800});
+						fx.set('background-color', '#3399FF');
+						setTimeout(function(){fx.start("background-color", "#3399FF", "#FFFFFF");}, 400);
+					}
+					if ($("toggle")) {
+						$("toggle").addEvent('click', function(e) {
+							if (e.target.innerHTML.indexOf("All") >= 0) {
+								e.target.innerHTML = "[ Hide ]";
+							}
+							else {
+								e.target.innerHTML = "[ All Games ]";
+							}
+							$("later_game_data").toggleClass("hidden");
+							return false;
+						});
+					}
+				}
+			}
+
+			document.addEvent('domready', init);
+		})();
 	</script>
 	<title>VUL Schedule</title>
 </head>
