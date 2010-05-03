@@ -20,7 +20,8 @@ class GameScraper
     games.each do |game|
       game_data = game.xpath('td')
       gametime = game_data[0].content
-      gametime = "2009-" + gametime
+      year = Time.now.year
+      gametime = year.to_s + "-" + gametime
       gametime = Time.parse(gametime).strftime("%Y-%m-%d %H:%M:%S")
       field = game_data[1].content
       field_url = 'http://vul.bc.ca' + game_data[1].child.attribute('href')
