@@ -11,7 +11,7 @@ class GameScraper
     res = Net::HTTP.start(url.host, url.port) {|http|
       http.request(req)
     }
-    
+
     doc = Nokogiri::HTML(res.body)
     games = doc.xpath('//div[@id="content"]/table/tr/td[@class="tabledata"]/..')
     db = SQLite3::Database.new('games.db')
@@ -31,7 +31,7 @@ class GameScraper
     end
     db.execute_batch(query)
   end
-  
+
   def collect_teams
     doc = Nokogiri::HTML(open('http://vul.bc.ca/v3/team/'))
     teams = doc.xpath('//td[@class="tabledata"]/a')
