@@ -13,11 +13,11 @@ class Game
   property :field_url, Text
   property :team1, Text
   property :team2, Text
-  
+
   def pretty_gameday
     self.gametime.strftime("%A %B %d")
   end
-  
+
   def pretty_gametime
     self.gametime.strftime("%I:%M %p")
   end
@@ -25,7 +25,7 @@ end
 
 class Team
   include DataMapper::Resource
-  
+
   property :id, Serial
   property :name, Text
   property :url, Text

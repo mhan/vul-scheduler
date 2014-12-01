@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.7.0/build/reset/reset-min.css"> 
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.7.0/build/reset/reset-min.css">
 	<link href="css/main.css" rel="stylesheet" type="text/css" media="screen" />
 	<link href="css/Autocompleter.css" rel="stylesheet" type="text/css" media="screen" />
-	
+
 	<script src="js/mootools-1.2.3-core.js"></script>
 	<script src="js/Observer.js"></script>
 	<script src="js/Autocompleter.js"></script>
@@ -12,7 +12,7 @@
 	<script>
 		(function() {
 			var autoComplete;
-			
+
 			function parseQueryString(qs) {
 				var q = qs.split("&");
 				var parsed = {};
@@ -24,7 +24,7 @@
 				}
 				return parsed;
 			};
-			
+
 			function getTeamName() {
 				var parsed = parseQueryString(window.location.search.substring(1));
 				if (parsed["teams"]) {
@@ -37,7 +37,7 @@
 				}
 				return "";
 			};
-			
+
 			function init() {
 				var teamName = getTeamName();
 				initSearch(teamName);
@@ -78,7 +78,7 @@
 				var teamName = input.value;
 				var req = new Request(
 					{
-						url: 'games', 
+						url: 'games',
 						onSuccess: function(games) {
 							loadGames(games, doAnimation);
 						},
